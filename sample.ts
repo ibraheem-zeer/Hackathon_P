@@ -1,5 +1,5 @@
-import AWS from 'aws-sdk';
-import fs from 'fs';
+const AWS = require('aws-sdk');
+const fs = require('fs');
 
 // Initialize the AWS SDK
 AWS.config.update({
