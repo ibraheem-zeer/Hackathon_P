@@ -1,11 +1,31 @@
-// import { accessKeyIdType } from './node_modules/aws-sdk/clients/iam.d';
-// import { region } from './node_modules/aws-sdk/clients/health.d';
-// const AWS = require('aws-sdk')
+const AWS = require('aws-sdk');
+const fs = require('fs');
 
-// let s3 = new AWS.s3({
-//     region: 'eu-west-2',
-//     accessKeyId: 'AKIA3SQWPZW4SHMS2HH5',
+// Initialize the AWS SDK
+AWS.config.update({
+    region: 'eu-west-2',
+    accessKeyId: 'AKIA3SQWPZW4WIK5OJNX',
+    secretAccessKey: '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'
+});
 
-// })
+// Use Rekognition
+const rekognition = new AWS.Rekognition();
 
-// s3.createbu
+// Load local image
+const filePath = 'main.jpg';  // Adjust this to your image's path
+const imageBytes = fs.readFileSync(filePath);
+
+const params = {
+    Image: {
+        Bytes: imageBytes
+    },
+    Attributes: ['ALL']
+};
+
+rekognition.detectFaces(params, function (err: any, data: any) {
+    if (err) {
+        console.error("Error:", err, err.stack);
+    } else {
+        console.log("Rekognition Result:", data);
+    }
+});
