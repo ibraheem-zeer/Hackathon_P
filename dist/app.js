@@ -1,7 +1,11 @@
+//import { dataSource } from 'index.js';
 import express from 'express';
 import multer from 'multer';
 import AWS from 'aws-sdk';
 import fs from 'fs';
+import './db/index.js';
+//import { createConnection } from 'typeorm';
+import 'reflect-metadata';
 const app = express();
 const port = process.env.PORT || 3000;
 // Configure AWS with your credentials
@@ -99,7 +103,24 @@ app.post('/extract-text', upload.single('file'), (req, res) => {
         }
     });
 });
-// Add other routes for file retrieval or additional functionality as needed
+// error handler
+app.use((err, req, res, next) => {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+});
+// createConnection()
+//     .then(async () => {
+//         app.listen(port, () => {
+//             console.log(`Server is running on port ${port}`);
+//         });
+//     })
+//     .catch((error) => {
+//         console.error('TypeORM connection error:', error);
+//     });
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
